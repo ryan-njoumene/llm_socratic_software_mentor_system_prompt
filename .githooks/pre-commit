@@ -1,0 +1,60 @@
+#!/bin/sh
+# .githooks/pre-commit
+
+# Configurable token threshold per instruction file
+MAX_TOKENS=4000
+
+# Retrieve staged Markdown files (Added, Copied, or Modified)
+staged_md_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.md$')
+
+if [ -z "$staged_md_files" ]; then
+    exit 0
+fi
+
+failed=0
+
+for file in $staged_md_files; do
+    # 1. Check for unclosed Markdown code fences in staged content
+    fence_count=$(git show ":$file" | grep -c '^```')
+    if [ $((fence_count % 2)) -ne 0 ]; then
+        echo "❌ [Markdown Error] $file: Odd number of triple backticks (\`\`\`) detected (unclosed fence)." >&2
+        failed=1
+    fi
+
+    # 2. Optional: Run markdownlint if installed
+    if command -v markdownlint >/dev/null 2>&1; then
+        if ! markdownlint "$file" >/dev/null 2>&1; then
+            echo "❌ [Lint Error] $file failed markdownlint checks." >&2
+            failed=1
+        fi
+    fi
+
+    # 3. Calculate staged token count using Python
+    token_count=$(git show ":$file" | python3 -c '
+import sys
+text = sys.stdin.read()
+try:
+import tiktoken
+enc = tiktoken.get_encoding("cl100k_base")
+print(len(enc.encode(text)))
+except ImportError:
+# Heuristic fallback: ~4 characters per token
+print(len(text) // 4)
+')
+
+    # 4. Enforce token budget
+    if [ "$token_count" -gt "$MAX_TOKENS" ]; then
+        echo "❌ [Token Limit Exceeded] $file contains ~$token_count tokens (Max:$MAX_TOKENS)." >&2
+        failed=1
+    else
+        echo "✓ [Tokens Passed] $file: ~$token_count / $MAX_TOKENS tokens"
+    fi
+done
+
+if [ $failed -ne 0 ]; then
+    echo "" >&2
+    echo "Commit blocked. Correct the issues above or bypass with 'git commit --no-verify'." >&2
+    exit 1
+fi
+
+exit 0
