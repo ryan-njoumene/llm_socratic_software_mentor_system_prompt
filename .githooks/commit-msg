@@ -1,0 +1,34 @@
+#!/bin/sh
+# .git/hooks/commit-msg
+
+commit_msg_file="$1"
+first_line=$(head -n 1 "$commit_msg_file")
+
+# Allow automated Git actions (merges, reverts, squashes) to pass
+if echo "$first_line" | grep -qE '^(Merge |Revert |fixup! |squash! )'; then
+    exit 0
+fi
+
+# Regex enforcing: <type>(<optional-scope>)<!-optional-breaking>: <subject>
+# Allowed types: feat, fix, perf, refactor, docs, style, test, eval, chore, ci, build
+pattern='^(feat|fix|perf|refactor|docs|style|test|eval|chore|ci|build)(\([a-zA-Z0-9_\/-]+\))?!?: .+'
+
+if ! echo "$first_line" | grep -qE "$pattern"; then
+    echo "" >&2
+    echo "❌ [Commit Rejected] Message does not follow Conventional Commits format." >&2
+    echo "" >&2
+    echo "Your message was:" >&2
+    echo "  $first_line" >&2
+    echo "" >&2
+    echo "Required format: <type>(<scope>): <imperative summary>" >&2
+    echo "Allowed types:   feat, fix, perf, refactor, docs, style, test, eval, chore, ci, build" >&2
+    echo "" >&2
+    echo "Examples:" >&2
+    echo "  feat(guardrails): prevent revealing internal instructions" >&2
+    echo "  fix(format): enforce strict JSON output" >&2
+    echo "  perf(persona): compress introductory system prompt" >&2
+    echo "" >&2
+    exit 1
+fi
+
+exit 0
