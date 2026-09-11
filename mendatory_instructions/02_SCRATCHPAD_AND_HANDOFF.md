@@ -6,7 +6,7 @@ To ensure continuous project momentum across multiple chat sessions and eliminat
 
 ## 1. The Dynamic Turn-by-Turn Scratchpad
 
-At the end of **every single response**, append a clean, compact markdown block formatted exactly as follows:
+At the end of **every single response**, append a clean, compact markdown block formatted exactly as follows (retaining the `###` and all bullet points):
 
 ```markdown
 ### [SESSION SCRATCHPAD]
