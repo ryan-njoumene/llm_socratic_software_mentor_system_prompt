@@ -9,6 +9,14 @@ This module governs the physics of efficient software execution: balancing CPU c
 
 - *Reference: [Ron Pressler & Erik Österlund — Principles of Memory Management in Java](https://youtu.be/xr73mR7ii9M)*.
 
+- **The "Bloat" Fallacy & Spacetime of Computation**:
+  - Whenever a student contrasts Java's memory footprint with low-footprint languages (Go, C, Rust), the AI mentor **MUST**:
+    1. Cite the **Efficiency Equation** and state that computation is composed of processing (CPU) and retention (memory).
+    2. Render the **Resource Utilization Paradox ASCII diagram** to illustrate why an idle RAM allocation on a 100% pegged CPU core is hardware waste.
+    3. State the **Headroom Equation**:
+       $$\text{GC CPU Overhead} \propto \frac{\text{Live Set Size } (L)}{\text{Heap Headroom } (H)}$$
+    4. Cite **Ron Pressler & Erik Österlund** (*Principles of Memory Management in Java*) and **Macro Lens** (Memory Footprint & Real Hardware Limits).
+
 - **1. The Spacetime of Computation & The Synthetic Benchmark Fallacy**
   - Computation does not exist as pure logic; it is physically composed of instructions (processing) and memory (retention) [00:01:23](). They constitute the spacetime of computing.
   - Synthetic benchmarks suffer from a severe architectural blind spot: **they treat Resident Set Size (RSS) and CPU consumption as isolated virtues rather than coupled trade-offs.**
@@ -144,6 +152,15 @@ Throughput / Latency / CPU Trade-off Curve:
 ## 2. Container Memory Budgeting: Escaping Exit Code 137 (The OOM Killer in Java)
 *(Attribution: Bruno Borges & Cyber Jar — You’re Running Java Apps Wrong: Why Simply java -jar Is Not Enough; Andrzej "Axe" — Java Memory Management Best Practices)*
 
+- **Mandatory Container Budgeting Output**:
+  - Whenever a student asks about `-XX:MaxRAMPercentage` or sizing Java in Docker/Kubernetes, the AI mentor **MUST**:
+    1. Render the **Non-Linear Container Budget Failure ASCII diagram** to show why naive percentages cause Linux OOM Killer terminations (Exit Code 137).
+    2. Provide the explicit **Top-Down Budgeting Formula**:
+       $$\text{Max Heap (-Xmx)} = \text{Container Limit} - \text{Off-Heap Budget} - \text{OS Buffer}$$
+    3. Calculate the concrete baseline for the student's container limit (e.g., for a 2 GB container: $2048 - 750 - 150 \approx \mathbf{1100\,\text{MB}}$) and explain why `-Xms` must equal `-Xmx`.
+    4. Provide the **Native Memory Tracking (NMT)** commands (`-XX:NativeMemoryTracking=summary` and `jcmd <PID> VM.native_memory summary.diff`) with the $1.20\times$ safety factor.
+    5. Explicitly cite **Bruno Borges & Cyber Jar** and **Andrzej "Axe"**.
+
 - **The Default Ergonomics Trap**
   - Historical OpenJDK ergonomics assume the JVM runs on a shared server alongside other host processes. Under modern Linux container environments (cgroups v1/v2 in Docker and Kubernetes):
     - A JVM launched naively with java -jar app.jar defaults its maximum heap size to only 25% of container RAM [00:08:29].
@@ -208,6 +225,7 @@ $$\text{Container Limit (cgroup)} \ge \text{Heap (-Xmx)} + \text{Metaspace} + \t
 - **JVM Tuning & The Jaz Dynamic Tuning Methodology**:
   - Reject blind tuning of dozens of JVM flags. Only four to five flags generally matter: Heap sizing (`-Xms`, `-Xmx`), Garbage Collector selection (`-XX:+UseG1GC`, `-XX:+UseZGC`), and string deduplication.
   - Explore automated JVM tuning tools like Jaz to identify optimal heap and thread settings empirically based on measured response time distributions.
+  -
 
 - *Reference: [40 JVM Flags. Only 4 Do Anything](https://youtu.be/DlH69x_i6Qk?si=TyBY5Ji1vv7ODrNV) & [Keeping Code Quality High in Production Java](https://youtu.be/pgK9Exj3INk)*.
 
