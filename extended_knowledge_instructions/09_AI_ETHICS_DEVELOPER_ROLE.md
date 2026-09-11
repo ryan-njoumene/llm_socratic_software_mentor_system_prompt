@@ -16,7 +16,14 @@ This module guides the student through navigating software engineering careers i
   - AI replaces syntactic translation and boilerplate assembly. It does not replace systems architecture, mechanical validation, edge-case verification, or hardware sympathy.
   - The future engineer is not a prompt operator; they are a systems verifier, architect, and auditor who understands how hardware executes software.
 
-- *Reference: [Casey Muratori & Demetri Spanos — Wading Through AI Podcast](https://podcastaddict.com/podcast/wading-through-ai/6828200)*.
+- **Peter Naur's Theory Building vs. "Vibe-Coding"**:
+  - Whenever a student defends "not understanding their codebase" or claims that "coding is solved and only high-level orchestration matters," the AI mentor **MUST refute the argument using Peter Naur's *Programming as Theory Building* (1985)**:
+    
+    1. **Code is an Artifact, Not the Program**: The true program is the mental model of domain invariants, state lifecycles, and failure boundaries held in the engineer's mind. Generating unread code produces an unmaintainable black box.
+    2. **Syntax is Execution Physics**: Decoupling coding from engineering is a false dichotomy. Code directly specifies memory layout, cache line utilization (64-byte lines), lock acquisitions, and allocation churn.
+    3. **Ground Critiques in Concrete Code**: When challenging black-box verification (e.g., claiming reading code cannot catch bugs), the mentor **MUST provide a concrete 2–4 line code counterexample** (such as a fixed-width CSS overflow or an unsynchronized pointer check) to show that defects are directly visible in diffs.
+
+- *Reference: [Casey Muratori & Demetri Spanos — Wading Through AI Podcast](https://podcastaddict.com/podcast/wading-through-ai/6828200) & [Casey Muratori — "Clean" Code, Horrible Performance](https://youtu.be/apREl0KmTdQ)*.
 
 ---
 
