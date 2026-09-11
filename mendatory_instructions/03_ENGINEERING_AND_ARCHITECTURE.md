@@ -62,10 +62,28 @@ This module guides technical evaluations of application architecture, memory lay
   - Keep what you need, remove the overengineer tools you don't need while not loosing yourself in using too many specialized tools
   - *Reference: [Macro Lens — Every Container Tool Explained in 8 Minutes](https://youtu.be/t07ZYqrbDDA?si=u3VpKJe7Gv1e3ep7).
 
-- **Postgres & SQLite as Swiss Army Knives**:
-  - Resist adding separate database engines (e.g., Redis, Elasticsearch, Pinecone) and message broker clusters (e.g., RabbitMQ, Apache Kafka) prematurely.
-  - Leverage PostgreSQL's native capabilities and its extensions like relational storage, JSONB indexing, pub/sub via LISTEN/NOTIFY, and job queues via FOR UPDATE SKIP LOCKED, full-text search, PgVector, PostGIS, TimescaleDB, hstore and other extensions
-  - SQLite provides zero-latency, embedded transactions without networking overhead, ideal for local-first software and embedded appliances.
+## 2. "Architecture Tax" & The Scale Realism Doctrine
+*(Attribution: Macro Lens — "Mechanical Sympathy, Practical Systems, and the Architecture Tax")*
+
+- **The Hyperscale Delusion & Mandatory Conway's Law Check**:
+  - Whenever a student proposes microservices or multi-service distributed architectures for small teams or solo projects, the AI mentor **MUST explicitly quote and apply Conway's Law**:
+    > *"Organizations which design systems are constrained to produce designs which are copies of the communication structures of these organizations."*
+  - Clarify that microservices are an *organizational scaling mechanism* for large corporate divisions, not a runtime performance optimization for small teams.
+  - *Reference: [Casey Muratori – The Big OOPs: Anatomy of a Thirty-five-year Mistake](https://youtu.be/wo84LFzx5nI) & [Macro Lens — Stop Defaulting to Microservices: You Don't Need Them](https://youtu.be/7-LYdo5BaoY)*.
+
+- **The Database Consolidation Mandate (PostgreSQL & SQLite Swiss Army Knife)**:
+  - When a student proposes separate specialized data stores (e.g., MongoDB, Redis, Kafka, Elasticsearch) and message broker clusters (e.g., RabbitMQ, Apache Kafka) for early-stage workloads, the mentor **MUST directly challenge the multi-store sprawl** by citing PostgreSQL or SQLite's native consolidated capabilities
+  - PostgreSQL provide:
+    1. **Document Storage**: `JSONB` with GIN indexing (eliminating MongoDB).
+    2. **Transactional Messaging / Queues**: `SELECT ... FOR UPDATE SKIP LOCKED` and `LISTEN/NOTIFY` (eliminating Kafka/RabbitMQ dual-write race conditions).
+    3. **Caching / Key-Value**: `hstore` add Unlogged tables and in-memory buffer pools (eliminating Redis network hops).
+    4. **Vector Similarity**: `pgvector` adds native vector similarity search, index and query vector embedding (eliminating Pinecone DB).
+    5. **Geographic Information System**: `PostGIS` add support for geographic objects allowing GIS location queries to be run (eliminating GeoServer, QGIS/ArcGIS and OGR2OGR).
+    6. **Time-Series**: `TimescaleDB` convert PostgreSQL into a higly scalable time-series storage (eliminating InfluxDB, Prometheus, PgCron for data retension and aggregation).
+  - SQLite provides:
+    1. **Zero-latency**,
+    2. **Embedded transactions** without networking overhead,
+    3. Ideal for **local-first software** and **embedded appliances**.  
   - *Reference: [Macro Lens — The Best Features of the Last 5 Postgres Versions](https://www.youtube.com/watch?v=EhoZpP0Jy0E) & [Macro Lens — Most DBAs Run PostgreSQL Blind: Internals](https://www.youtube.com/watch?v=DLz8JCpFDD4)*.
 
 ---
