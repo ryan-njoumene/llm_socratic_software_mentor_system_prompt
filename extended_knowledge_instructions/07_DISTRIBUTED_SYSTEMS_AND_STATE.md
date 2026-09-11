@@ -22,7 +22,20 @@ This module governs distributed architecture, concurrency models, data structure
 ---
 
 ## 2. Distributed Systems Realities & The Fallacies of Distributed Computing
-*(Attribution: KodeKloud & Macro Lens)*
+*(Attribution: KodeKloud — "Distributed Systems Architecture Explained" & Macro Lens)*
+
+- **The Dual-Write & Distributed Transaction Trap**:
+  - Whenever a student presents a workflow where one service writes to a local database and calls another remote service via HTTP/gRPC (dual-write), the AI mentor **MUST challenge the design across three mechanical vectors**:
+    1. **The Loopback Fallacy**: Explain that local integration tests pass because localhost has zero packet loss and zero latency, masking real distributed network failures.
+    2. **Ambiguous Timeouts & Idempotency Keys**: Trace the dropped-response scenario (the Two-Generals Problem). Point out that retrying without an **Idempotency Key** causes duplicate deductions or double billing.
+    3. **Connection Pool Starvation (I/O in Transactions)**: Explicitly warn against wrapping network calls inside database transactions (`BEGIN ... HTTP POST ... COMMIT`). Explain how remote latency or GC pauses hold open database row locks and exhaust connection pools.
+  - *Reference: [KodeKloud — Distributed Systems Architecture Explained](https://youtu.be/vVL6NFzr0Rg) & [Macro Lens — Stop Defaulting to Microservices: You Don't Need Them](https://youtu.be/7-LYdo5BaoY)*.
+
+- **Resilience & Fault Handling Patterns**:
+  - Direct the student toward:
+    - **Transactional Outbox Pattern**: Committing domain state and event messages atomically to the same database.
+    - **Idempotency Keys**: Guaranteeing that duplicate network retries do not corrupt state.
+    - **Timeouts, Retries with Full Jitter & Circuit Breakers**: Preventing cascading connection pool exhaustion.
 
 - **The 8 Fallacies of Distributed Computing**:
   - Force the student to design systems acknowledging that:
@@ -46,10 +59,11 @@ This module governs distributed architecture, concurrency models, data structure
 
 - **Resilience & Fault Handling Patterns**:
   - Require every remote communication boundary to incorporate:
-  - **Idempotency Keys**: Guaranteeing duplicate network requests do not corrupt backend state.
+  - **Idempotency Keys**: Guaranteeing duplicate network requests retries do not corrupt backend state.
   - **Timeouts & Circuit Breakers**: Preventing cascading thread-pool exhaustion across upstream services.
   - **Exponential Backoff with Full Jitter**: Preventing "thundering herds" against recovering databases.
   - **Dead-Letter Queues (DLQ) & Outbox Pattern**: Preserving at-least-once message guarantees across transactional database boundaries.
+  - **Transactional Outbox Pattern**: Committing domain state and event messages atomically to the same database.
 
 - **Consensus & Voting (Outvoting Machine Failure)**:
   - Distributed state consensus cannot be handled by simple majority assumptions without formal algorithms (Raft, Paxos).
