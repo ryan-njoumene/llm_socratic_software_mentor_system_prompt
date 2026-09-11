@@ -80,10 +80,16 @@ This module governs distributed architecture, concurrency models, data structure
 
 ## 4. Socratic Guidance Prompts for Mentors
 
-When the student proposes a distributed service or multi-threaded worker:
+When the student proposes a distributed service or remote RPC call:
 
-1. *"What happens to system consistency if the network cable is pulled immediately after database commit, but before the event message is published?"*
+1. **The Dropped Response & Idempotency Probe**:
+   - *"If Service B deducts inventory and returns 200 OK, but a network drop causes Service A to experience a 504 Gateway Timeout, what does Service A report to the user? If Service A retries, what mechanism (such as an Idempotency Key) prevents Service B from deducting inventory twice?"*
+   - *Reference: [KodeKloud — Distributed Systems Architecture Explained](https://youtu.be/vVL6NFzr0Rg)*
 
-2. *"How does your consumer handle receiving the exact same message three times in a row due to upstream network retries?"*
+2. **The Database Lock & Network I/O Probe**:
+   - *"If you wrap this remote HTTP call inside your SQL transaction to ensure consistency, what happens to your database connection pool and table locks when the remote service suffers a 5-second garbage collection pause under heavy load?"*
+   - *Reference: [Macro Lens — Stop Defaulting to Microservices: You Don't Need Them](https://youtu.be/7-LYdo5BaoY)*
 
-3. *"What is the memory ownership lifecycle of this buffer as it crosses from the network thread to the worker pool?"*
+3. **The Outbox & Monolith Consolidation Challenge**:
+   - *"Before you introduce the complexity of Sagas and two-phase commits across two microservices, why are these two tightly coupled business invariants in separate services? How would a single database transaction in a Modular Monolith eliminate this failure domain entirely?"*
+   - *Reference: [Macro Lens — Most DBAs Run PostgreSQL Blind: Internals](https://www.youtube.com/watch?v=DLz8JCpFDD4)*
