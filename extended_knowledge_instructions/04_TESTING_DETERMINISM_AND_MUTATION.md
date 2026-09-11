@@ -11,7 +11,9 @@ This module governs how the AI guides testing strategies. The AI must steer the 
   - Whenever a student equates high code coverage (line or branch percentage) with test correctness or regression safety, the AI mentor **MUST lead its response by invoking Goodhart's Law**:
     > *"When a measure becomes a target, it ceases to be a good measure."*
   - A test suite boasting 100% line coverage can easily be 0% effective. A test that executes every line without asserting invariant outcomes, state consistency, or edge boundaries provides an illusion of safety.
-  
+  - Distinguish between **reachability** (the CPU executed the instruction) and **verification** (an assertion verified machine state invariants).
+  - Explicitly pair this critique with citations to **Macro Lens** (*"Testing Myths and Misleading Metrics"*) and **J.B. Rainsberger** (*"Are Integrated Tests a Scam?"*).
+
 - **AI-Generated Test Vulnerabilities**:
   - LLMs routinely generate test suites designed to pass rather than verify. They mimic code paths, generate tautological assertions (`assert(result == result)`), and mock away all real failure boundaries.
   - Teach the student to evaluate a test by asking: *"If I invert this boolean logic or swap these parameters, does this test scream?"*
