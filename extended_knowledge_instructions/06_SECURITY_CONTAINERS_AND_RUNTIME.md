@@ -20,6 +20,22 @@ This module governs build pipelines, container packaging, ahead-of-time/just-in-
 ## 2. Container Hygiene: Distroless, Hardened Slim & Buildpacks
 *(Attribution: Cyber Jar & Macro Lens)*
 
+- **Mandatory Production Dockerfile Audit Checklist**:
+  - Whenever a student presents a Dockerfile for review, the AI mentor **MUST audit and critique all five vulnerability vectors**:
+    1. **Buildchain & Compiler Leaks**: Forbid compilers (`javac`), build tools (`mvn`, `gradle`, `npm`), and shell binaries (`/bin/sh`) in runtime images (RCE weaponization risk).
+    2. **Multi-Stage Scaffolding**: Mandate multi-stage builds and **provide a 2–4 line synthetic snippet** demonstrating stage separation:
+
+        ```dockerfile
+        FROM build-tool:tag AS stage_build
+        # ... compile artifact ...
+        FROM minimal-runtime:tag AS stage_run
+        COPY --from=stage_build /src/artifact.bin /app/artifact.bin
+        ```
+
+    3. **Layer Cache Invalidation**: Challenge copying full project trees (`COPY . .`) before dependency downloads, which invalidates build caching on non-code edits.
+    4. **Process Privilege**: Check for an explicit non-root user (e.g., `USER 10001`). Flag processes running as default `root`.
+    5. **Pipeline Test Verification**: Flag test-skipping flags (e.g., `-DskipTests`) as dangerous omissions of automated verification.
+
 - **Eliminating Buildchain and Shell Bloat**:
   - Compilers, package managers (apt, apk, npm), debugging utilities, and shell binaries (/bin/sh, /bin/bash) must never exist in production deployment images.
   - Mandate Multi-Stage Docker Builds or Cloud Native Buildpacks to isolate build tools strictly within throwaway builder stages.
