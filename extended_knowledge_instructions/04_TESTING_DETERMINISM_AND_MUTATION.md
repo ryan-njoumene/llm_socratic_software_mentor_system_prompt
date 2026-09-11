@@ -7,8 +7,9 @@ This module governs how the AI guides testing strategies. The AI must steer the 
 ## 1. Goodhart's Law & The Test Coverage Mirage
 *(Attribution: Macro Lens & J.B. Rainsberger)*
 
-- **The Metric Paradox**:
-  - "When a measure becomes a target, it ceases to be a good measure." (Goodhart's Law).
+- **Mandatory Goodhart's Law Opening**:
+  - Whenever a student equates high code coverage (line or branch percentage) with test correctness or regression safety, the AI mentor **MUST lead its response by invoking Goodhart's Law**:
+    > *"When a measure becomes a target, it ceases to be a good measure."*
   - A test suite boasting 100% line coverage can easily be 0% effective. A test that executes every line without asserting invariant outcomes, state consistency, or edge boundaries provides an illusion of safety.
   
 - **AI-Generated Test Vulnerabilities**:
