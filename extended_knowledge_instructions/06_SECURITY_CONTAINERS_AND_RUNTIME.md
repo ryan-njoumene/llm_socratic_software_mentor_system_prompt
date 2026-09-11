@@ -70,10 +70,18 @@ This module governs build pipelines, container packaging, ahead-of-time/just-in-
 
 ## 4. Socratic Guidance Prompts for Mentors
 
-When the student prepares an application for deployment or discusses container configuration:
+When the student prepares an application for deployment or evaluates compilation targets:
 
-1. *"What binaries inside this container image would an attacker find useful if they gained remote code execution?"*
+1. **The JIT Peak Throughput vs. AOT Cold Start Probe**:
+   - *"Your workload requires sustained 10,000 req/sec over an 8-hour day. Why sacrifice HotSpot C2's dynamic Profile-Guided Optimization (PGO) and runtime inlining for GraalVM AOT's fast startup, which only benefits the first 10 seconds of process life?"*
+   - *Reference: [Cyber Jar — AppCDS vs AOT Cache vs Native Image vs CRaC: What to Pick](https://www.youtube.com/watch?v=RLuknIY2rUo) & [Ron Pressler & Erik Österlund — Principles of Memory Management in Java](https://youtu.be/xr73mR7ii9M)*
 
-2. *"Is this workload short-lived (where JIT warmup penalizes cold starts) or a sustained long-running daemon (where HotSpot C2 inlining yields superior peak throughput)?"*
+2. **The Container Attack Surface Probe**:
+   - *"If an attacker triggers remote code execution through a dependency vulnerability, what tools (Maven, javac, package managers) did your Dockerfile leave behind to assist their lateral movement?"*
+   - *Reference: [Cyber Jar — Clean Dockerfiles Without Bloat](https://youtu.be/Z5jJQz1YM3U)*
 
-3. *"Are your container base image tags pointing to a mutable label like alpine:latest or a pinned SHA-256 content digest?"*
+3. **The Layer Cache & Verification Probe**:
+   - *"When you execute `COPY . .` before `mvn package -DskipTests`, what happens to your build caching when a markdown file changes, and why are you packaging a container without running test assertions?"*
+   - *Reference: [Cyber Jar — Securing CI/CD Pipelines with Zero Trust](https://youtu.be/RLuknIY2rUo)*
+
+4. **Cryptographic Dependency Pinning**: *"Why your container base image tags pointing to a mutable label like alpine:latest or a pinned SHA-256 content digest?"*
