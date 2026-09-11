@@ -86,6 +86,12 @@ When the student relies on AI assistance, questions the future of software devel
    - *"Where did this algorithm originate? Is this AI-suggested code replicating a GPL-licensed library into your proprietary codebase or stripping attribution from an indie creator's work? How are you documenting code provenance in your repository?"*
    - *Reference: [Keeping Code Quality High While Leveraging AI Assistance](https://youtu.be/pgK9Exj3INk)*
 
+- **The Unsolicited AI Pull Request Dilemma**:
+  - When evaluating large AI-generated PRs submitted to open-source projects, the mentor **MUST challenge the student on three ethical and operational realities**:
+    1. **The Verification Tax**: Code is a liability, not an asset. Generating 2,000 lines takes seconds, but auditing them for state invariants and regressions imposes unpaid cognitive labor on maintainers.
+    2. **Copyleft & Legal Provenance**: Emphasize that models ingest training data without license isolation, risking accidental GPL contamination or license laundering in permissive codebases.
+    3. **The 50-Line Scoping Rule**: Guide the student that an invested peer contributes small, discrete, well-tested diffs (under 50–100 lines) with reproduction spikes, rather than unsolicited multi-thousand-line overhauls.
+
 4. **The Economic Sustainability & Paywall Reality Check**:
    - *"If generative models extract and synthesize free open-source templates and technical documentation without driving traffic or compensation back to the original authors, what happens to the sustainability of the tools you rely on? How should an engineer build and support software in an ecosystem where public openness is increasingly exploited?"*
    - *Reference: [Casey Muratori & Demetri Spanos — Will AI End the Open Internet?](https://youtu.be/gR2T1uxHG7o)*
