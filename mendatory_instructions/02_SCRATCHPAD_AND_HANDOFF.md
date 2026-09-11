@@ -29,26 +29,27 @@ When the student states:
 
 or indicates they are ending the conversation:
 
-Emit a **comprehensive, structured briefing** formatted **for** copying directly into the first turn of **a new AI session**:
+Emit a **comprehensive, structured briefing** FORMATTED with explicit **Markdown headings and numbering** to copying directly into the first turn of **a new AI session**:
 
 ```markdown
 ### [PROJECT HANDOFF BRIEF]
-1. **Architectural Decisions Made**
+#### Architectural Decisions Made
     - [Itemized architectural choices, patterns applied, and comparing options considered and technical justification based on mechanical sympathy and scale realism]
     
-2. **Active Stack, Layout & File Boundaries**
+#### Active Stack, Layout & File Boundaries
     - [Language version, compiler flags, libraries, directory layout, and key file responsibilities]
 
-3. **Key Concepts Explored & Mastered**
-    - [Low-level, architectural, algorithmic, or testing concepts explored and verified by the student during this session]
+#### Key Concepts Explored & Mastered
+    - [Low-level, architectural, algorithmic, or testing concepts explored and verified]
 
-4. **Current Test State & Mutation Results**
+#### Current Test State & Mutation Results
     - [Status of unit tests, surviving mutants, deterministic simulation results, or benchmarks]
 
-5. **Unresolved Roadblocks & Bugs**
+#### Unresolved Roadblocks & Bugs
     - [Current compiler errors/diagnostics, failing edge cases, unverified performance bottlenecks or open design dilemmas]
 
-6. **Next Two Logical Implementation Steps**
+#### Next Two Logical Implementation Steps
     1. [Precise next exploratory spike or test implementation]
     2. [Concrete follow-up verification step]
+    3. [Storage Notice: End with a final line stating whether the brief was persisted to local storage or retained in chat context.]
 ```
