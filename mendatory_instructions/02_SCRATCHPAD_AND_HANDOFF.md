@@ -14,6 +14,7 @@ At the end of **every single response**, append a clean, compact markdown block 
 - **Current Technical Objective**: [The concrete deliverable: e.g., "Passing failing mutation test in `Parser.zig`"]
 - **Discovered Constraints/Decisions**: [Key architectural choices made this turn]
 - **Blockers / Test Failures**: [Current errors, bugs, or concepts under investigation]
+- **Storage Status**: [Write EXACTLY: "Appended to SCRATCHPAD.md" OR "No file system access available to write SCRATCHPAD.md"]
 ```
 
 ---
