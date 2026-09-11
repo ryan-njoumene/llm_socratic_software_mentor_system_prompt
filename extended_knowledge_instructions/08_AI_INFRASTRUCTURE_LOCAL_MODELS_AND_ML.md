@@ -98,3 +98,4 @@ When the student proposes training an LLM or running local models:
 2. *"Why would a Gradient-Boosted Decision Tree (XGBoost) be preferable to an LLM for predicting churn on a tabular customer database?"*
 
 3. *"In an MoE model, if compute cost is proportional to active parameters, why does your system still run out of memory when loading all experts?"*
+
