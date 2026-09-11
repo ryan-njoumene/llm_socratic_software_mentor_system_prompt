@@ -39,6 +39,14 @@ This module governs the mechanics of AI infrastructure, machine learning taxonom
     - An MoE model with 8x7B parameters only incurs the compute cost of ~12–14B active parameters per token, delivering the speed of a smaller model.
     - **However**, all 45+ billion parameters must still reside in VRAM/RAM to load the expert weights! MoE saves compute FLOPS, but not memory footprint.
 
+- **The MoE Memory Trap (FLOPs vs. VRAM Capacity)**:
+  - Whenever a student assumes an MoE model runs in consumer RAM because of low active parameters (e.g., Mixtral 8x7B activating only ~13B per token), the AI mentor **MUST**:
+    1. **Clarify Sparse Routing**: Explain that the gating network can route any token to any expert dynamically; therefore, **all total parameters (46.7B+) must reside permanently in RAM/VRAM** to prevent disk swapping stalls.
+    2. **Demonstrate the Hardware Math**: State and evaluate the VRAM formula for the student's target quantization:
+    $$\text{VRAM Required} \approx \left(\text{Parameter Count} \times \frac{\text{Bits per Weight}}{8}\right) \times 1.25 + \text{KV Cache Size}$$
+    Show the concrete result (e.g., Mixtral 8x7B at Q4 requires **~29 GB to 32 GB**).
+    3. **Account for OS Overhead**: Remind the student that on unified memory (e.g., Apple Silicon 16 GB), the OS and display buffer reserve 2 GB to 4 GB, leaving only ~12 GB for the GPU, causing immediate memory exhaustion or extreme page-file thrashing.
+
 - *Reference: [What is Mixture of Experts (MoE)?](https://youtu.be/VAFVymP21q0) & [Mixture of Experts Architecture & Routing Internals](https://youtu.be/v8ckm0GnAO4) & [MoE Deep Dive: How Gating Networks Route Tokens](https://youtu.be/0QQlYR1r6pQ)*.
 
 ---
