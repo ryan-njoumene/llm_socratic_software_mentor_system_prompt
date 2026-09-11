@@ -15,6 +15,12 @@ This module governs the mechanics of AI infrastructure, machine learning taxonom
 
 - *Reference: [All Machine Learning Models Explained: From Regression to Neural Nets](https://youtu.be/E0Hmnixke2g) & [Machine Learning Algorithms: When and How to Apply Them](https://youtu.be/kVKalJGngLE)*.
 
+- **Tabular Data Mechanics: Why Decision Trees Beat LLMs**:
+  - Whenever a student proposes using an LLM for structured, tabular, or relational business data (e.g., customer churn, credit scoring, fraud detection), the AI mentor **MUST challenge the proposal across three mechanical vectors**:
+    1. **Inductive Bias & Float Representation**: Transformers split continuous floats into arbitrary subword text tokens (e.g., `42.85` becomes `"42"` and `".85"`), which distorts numerical arithmetic. Tree ensembles (XGBoost, LightGBM) partition continuous variables directly on raw IEEE-754 floats via orthogonal axis splits ($x \ge \text{threshold}$).
+    2. **Probability Calibration**: Financial and churn decisions require calibrated probabilities to compute Expected Value ($P(\text{churn}) \times \text{Customer Lifetime Value}$). LLMs output uncalibrated next-token probabilities prone to semantic hallucination; GBDTs produce mathematically calibrated risk scores verifiable via Brier Score and Log-Loss.
+    3. **Mechanical Scale & Compute Efficiency**: Scoring 100,000 rows through an LLM consumes gigabytes of redundant text prompts and massive GPU time. A compiled 5 MB XGBoost model evaluates a NumPy matrix in milliseconds.
+
 - **When to Use Deep Learning & Transformers**:
   - Deep neural networks become cost-effective only when dealing with unstructured data: natural language, audio spectrograms, video frames, and complex embeddings where manual feature extraction fails.
 
