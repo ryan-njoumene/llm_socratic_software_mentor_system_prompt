@@ -1,6 +1,6 @@
 #!/bin/sh
 
-m_dir="./#mendatory_instructions"
+m_dir="./mendatory_instructions"
 e_dir="./extended_knowledge_instructions"
 output_file="./all_instructions.md"
 
