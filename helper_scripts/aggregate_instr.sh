@@ -1,16 +1,12 @@
 #!/bin/sh
 
-m_dir="./mendatory_instructions"
-e_dir="./extended_knowledge_instructions"
-output_file="./all_instructions.md"
+instructions_dir="./instructions_library"
+output_file="./system_instructions.md"
 
-m_values=$(ls "$m_dir")
+m_values=$(ls "$instructions_dir")
 m_size=$(echo "$m_values" | wc -w)
 
-e_values=$(ls "$e_dir")
-e_size=$(echo "$e_values" | wc -w)
-
-all_values=$(printf "%s %s" "$m_values" "$e_values")
+all_values=$(printf "%s" "$m_values")
 
 ls_index=0
 for file in $all_values; do
@@ -19,13 +15,8 @@ for file in $all_values; do
         printf "" > "$output_file"
     fi
 
-    if [ "$ls_index" -lt "$m_size" ]; then
-        # m
-        cat "${m_dir}/${file}" >> "$output_file"
-    else
-        # e
-        cat "${e_dir}/${file}" >> "$output_file"
-    fi
+    # dir instructions_library
+    cat "${instructions_dir}/${file}" >> "$output_file"
 
     echo "" >> "$output_file"
     

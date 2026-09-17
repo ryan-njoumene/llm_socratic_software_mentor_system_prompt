@@ -1,6 +1,6 @@
 #!/bin/sh
 
-target_file="./all_instructions.md"
+target_file="./system_instructions.md"
 
 clip < "$target_file"
 
